@@ -54,3 +54,4 @@ input_scaled = scaler.transform(input_df)
 if st.button("Predict Stress Level"):
     pred = model.predict(input_scaled)[0]
     st.success(f"Predicted Stress Level: {pred}")
+``
