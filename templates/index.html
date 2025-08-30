@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stress Prediction</title>
+</head>
+<body>
+    <h1>Stress Level Prediction</h1>
+    <form action="/predict" method="POST">
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required><br><br>
+
+        <label for="academic_load">Academic Load:</label>
+        <input type="text" id="academic_load" name="academic_load" required><br><br>
+
+        <label for="attendance">Attendance:</label>
+        <input type="text" id="attendance" name="attendance" required><br><br>
+
+        <label for="caffeine_intake">Caffeine Intake:</label>
+        <input type="text" id="caffeine_intake" name="caffeine_intake" required><br><br>
+
+        <label for="family_issues">Family Issues:</label>
+        <input type="text" id="family_issues" name="family_issues" required><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction %}
+    <h3>Predicted Stress Level: {{ prediction }}</h3>
+    {% endif %}
+</body>
+</html>
