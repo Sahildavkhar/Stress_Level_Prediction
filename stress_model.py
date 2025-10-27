@@ -111,3 +111,76 @@ joblib.dump(label_encoders, 'label_encoders.pkl')
 joblib.dump(reduced_features, 'feature_names.pkl')
 
 print("\n✅ Model training, comparison, and saving complete!")
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+
+# -----------------------------
+# 6. Visualization - Model Accuracy Comparison
+# -----------------------------
+plt.figure(figsize=(8, 5))
+sns.barplot(x='Model', y='Accuracy', data=results_df, palette=['#FFA500', '#87CEEB', '#32CD32'])
+plt.title('Model Accuracy Comparison', fontsize=14, fontweight='bold')
+plt.xlabel('Models')
+plt.ylabel('Accuracy')
+plt.ylim(0, 1)
+
+# Add accuracy values above bars
+for i, v in enumerate(results_df['Accuracy']):
+    plt.text(i, v + 0.01, str(v), ha='center', fontweight='bold')
+
+plt.tight_layout()
+plt.savefig('model_accuracy_comparison.png')
+plt.show()
+
+# -----------------------------
+# 7. Confusion Matrix for Each Model
+# -----------------------------
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+fig.suptitle('Confusion Matrices for Models', fontsize=14, fontweight='bold')
+
+for ax, (name, (model, params)) in zip(axes, models.items()):
+    # Retrain best model for confusion matrix
+    grid = GridSearchCV(model, params, cv=3, scoring='accuracy', n_jobs=-1)
+    grid.fit(X_train, y_train)
+    best_model = grid.best_estimator_
+    y_pred = best_model.predict(X_test)
+
+    cm = confusion_matrix(y_test, y_pred)
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax)
+    ax.set_title(name)
+    ax.set_xlabel('Predicted label')
+    ax.set_ylabel('True label')
+
+plt.tight_layout()
+plt.savefig('confusion_matrices.png')
+plt.show()
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+
+# -----------------------------
+# 6. Plot confusion matrices
+# -----------------------------
+fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+fig.suptitle("Confusion Matrices for Models", fontsize=14, fontweight='bold')
+
+for ax, (name, (model, _)) in zip(axes, models.items()):
+    # Retrain model with best params for fair comparison
+    grid = GridSearchCV(model, _, cv=3, scoring='accuracy', n_jobs=-1)
+    grid.fit(X_train, y_train)
+    y_pred = grid.best_estimator_.predict(X_test)
+
+    cm = confusion_matrix(y_test, y_pred)
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False, ax=ax)
+    ax.set_title(name)
+    ax.set_xlabel("Predicted Label")
+    ax.set_ylabel("True Label")
+
+plt.tight_layout()
+plt.savefig("confusion_matrices.png", dpi=300)
+plt.show()
+
+
