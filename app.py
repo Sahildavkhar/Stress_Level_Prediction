@@ -21,7 +21,7 @@ stress_labels = {
     0: "Low",
     1: "Moderate",
     2: "High",
-    3: "Very High"
+    # 3: "Very High"
 }
 
 st.title("🧠 Stress Level Prediction")
